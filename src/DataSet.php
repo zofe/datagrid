@@ -122,19 +122,19 @@ class DataSet
             $this->query = DB::table($this->source);
             $this->total_rows = $this->query->count();
             
-        } elseif (is_a($this->source, "\Illuminate\Database\Eloquent\Model")) {
+        } elseif (is_a($this->source, '\Illuminate\Database\Eloquent\Model')) {
             $this->type = "model";
             $this->query = $this->source;
             $this->total_rows = $this->query->count();
             $this->key = $this->source->getKeyName();
 
-        } elseif ( is_a($this->source, "\Illuminate\Database\Eloquent\Builder")) {
+        } elseif ( is_a($this->source, '\Illuminate\Database\Eloquent\Builder')) {
             $this->type = "model";
             $this->query = $this->source;
             $this->total_rows = $this->query->count();
             $this->key = $this->source->getModel()->getKeyName();
 
-        } elseif ( is_a($this->source, "\Illuminate\Database\Query\Builder")) {
+        } elseif ( is_a($this->source, '\Illuminate\Database\Query\Builder')) {
             $this->type = "model";
             $this->query = $this->source;
             $this->total_rows = $this->query->count();
