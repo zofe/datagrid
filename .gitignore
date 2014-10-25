@@ -9,4 +9,3 @@ composer.lock
 /views/*
 !pagination.blade.php
 !dataset.blade.php
-index.php
