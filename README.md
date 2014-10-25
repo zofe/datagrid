@@ -30,7 +30,7 @@ install via composer
 
     {
         "require": {
-            "zofe/deficient": "dev-master"
+            "zofe/datagrid": "dev-master"
         }
     }
     
