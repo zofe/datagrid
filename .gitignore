@@ -1,0 +1,12 @@
+.DS_Store
+.idea
+composer.lock
+/vendor
+/cache
+/config
+/lang
+/models
+/views/*
+!pagination.blade.php
+!dataset.blade.php
+index.php
