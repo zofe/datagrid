@@ -17,6 +17,9 @@
         
     },
     "autoload": {
-        "psr-0": {"Zofe\\DataGrid": "src/"}
+        "psr-4": {
+            "Zofe\\DataGrid\\": "src/",
+            "Zofe\\DataGrid\\Tests\\": "tests/"
+        }
     }
 }
