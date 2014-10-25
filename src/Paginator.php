@@ -58,7 +58,7 @@ class Paginator
         if ($this->total_pages < 2)
             return '';
         
-        return render($view, get_object_vars($this));
+        return blade($view, get_object_vars($this));
     }
 
 

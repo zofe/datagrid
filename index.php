@@ -28,17 +28,17 @@ route_get('^/{page?}$', function () {
     $ds->paginate(10);
     $ds->build();
     
-    echo render('dataset', compact('ds'));
+    echo blade('dataset', compact('ds'));
     die;
 });
 
 route_get('^/test/(\w+)$', function ($slug) {
-    echo render('hello', array('title'=>$slug, 'content'=>'Hello '.$slug));
+    echo blade('hello', array('title'=>$slug, 'content'=>'Hello '.$slug));
     die;
 });
 
 route_missing(function() {
-    echo render('error', array(), 404);
+    echo blade('error', array(), 404);
     die;
 });
 
