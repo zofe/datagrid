@@ -26,8 +26,13 @@ It has really minimal dependencies.
 
 ## Installation
 
-install via composer adding ```"zofe/datagrid": "dev-master"```
+install via composer 
 
+    {
+        "require": {
+            "zofe/deficient": "dev-master"
+        }
+    }
     
 ## Setup
 
