@@ -158,15 +158,7 @@ class DataSet
             //orderby
             if (isset($this->orderby)) {
                 list($field, $direction) = $this->orderby;
-                $column = array();
-                foreach ($this->source as $key => $row) {
-                    $column[$key] = is_object($row) ? $row->{$field} : $row[$field];
-                }
-                if ($direction == "asc") {
-                    array_multisort($column, SORT_ASC, $this->source);
-                } else {
-                    array_multisort($column, SORT_DESC, $this->source);
-                }
+                array_orderby($this->source, $field, $direction);
             }
 
             //limit-offset

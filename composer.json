@@ -20,6 +20,7 @@
         "psr-4": {
             "Zofe\\DataGrid\\": "src/",
             "Zofe\\DataGrid\\Tests\\": "tests/"
-        }
+        },
+        "files": ["src/helpers.php"]
     }
 }
