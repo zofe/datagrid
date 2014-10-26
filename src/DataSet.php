@@ -17,9 +17,13 @@ class DataSet
      */
     protected $query;
 
+    protected $valid_sources = array('Illuminate\Database\Eloquent\Model',
+                                     'Illuminate\Database\Eloquent\Builder',
+                                     'Illuminate\Database\Query\Builder');
 
     protected $paginator;
     protected $per_page = 10;
+    protected $total_rows;
     
     public $data = array();
     protected $hash = '';
@@ -40,12 +44,15 @@ class DataSet
     public static function source($source)
     {
         $ins = new static();
-        $ins->source = $source;
-
+        $ins->source = $ins->fixQuery($source);
+        $ins->query = $ins->source;
         
+        $ins->total_rows = $ins->getCount();
+        $ins->key = $ins->getKeyName();
+        
+        //bind events
         BurpEvent::listen('dataset.sort', array($ins, 'sort'));
         BurpEvent::listen('dataset.page', array($ins, 'page'));
-
         return $ins;
     }
 
@@ -115,71 +122,36 @@ class DataSet
         BurpEvent::flush('dataset.sort');
         BurpEvent::flush('dataset.page');
         
-        
-        if (is_string($this->source) && strpos(" ", $this->source) === false) {
-            //tablename
-            $this->type = "query";
-            $this->query = DB::table($this->source);
-            $this->total_rows = $this->query->count();
-            
-        } elseif (is_a($this->source, '\Illuminate\Database\Eloquent\Model')) {
-            $this->type = "model";
-            $this->query = $this->source;
-            $this->total_rows = $this->query->count();
-            $this->key = $this->source->getKeyName();
-
-        } elseif ( is_a($this->source, '\Illuminate\Database\Eloquent\Builder')) {
-            $this->type = "model";
-            $this->query = $this->source;
-            $this->total_rows = $this->query->count();
-            $this->key = $this->source->getModel()->getKeyName();
-
-        } elseif ( is_a($this->source, '\Illuminate\Database\Query\Builder')) {
-            $this->type = "model";
-            $this->query = $this->source;
-            $this->total_rows = $this->query->count();
-
-        }
-        //array
-        elseif (is_array($this->source)) {
-            $this->type = "array";
-            $this->total_rows = count($this->source);
-        } else {
-            throw new \Exception(' "source" must be a table name, an eloquent model or an eloquent builder. you passed: ' . get_class($this->source));
-        }
-
 
         $this->paginator =  Paginator::make($this->total_rows, $this->per_page, $this->page);
         $offset = $this->paginator->offset();
         $this->limit($this->per_page, $offset);
 
         
-        //build subset of data
-        switch ($this->type) {
-            case "array":
-                //orderby
-                if (isset($this->orderby)) {
-                    list($field, $direction) = $this->orderby;
-                    $column = array();
-                    foreach ($this->source as $key => $row) {
-                        $column[$key] = is_object($row) ? $row->{$field} : $row[$field];
-                    }
-                    if ($direction == "asc") {
-                        array_multisort($column, SORT_ASC, $this->source);
-                    } else {
-                        array_multisort($column, SORT_DESC, $this->source);
-                    }
-                }
+        if (is_array($this->source)) {
 
-                //limit-offset
-                if (isset($this->limit)) {
-                    $this->source = array_slice($this->source, $this->limit[1], $this->limit[0]);
+            //orderby
+            if (isset($this->orderby)) {
+                list($field, $direction) = $this->orderby;
+                $column = array();
+                foreach ($this->source as $key => $row) {
+                    $column[$key] = is_object($row) ? $row->{$field} : $row[$field];
                 }
-                $this->data = $this->source;
-                break;
+                if ($direction == "asc") {
+                    array_multisort($column, SORT_ASC, $this->source);
+                } else {
+                    array_multisort($column, SORT_DESC, $this->source);
+                }
+            }
 
-            case "query":
-            case "model":
+            //limit-offset
+            if (isset($this->limit)) {
+                $this->source = array_slice($this->source, $this->limit[1], $this->limit[0]);
+            }
+            $this->data = $this->source;
+
+
+        } else {
                 
                 //orderby
 
@@ -192,13 +164,63 @@ class DataSet
                     $this->query = $this->query->skip($offset)->take($this->per_page);
                 }
                 $this->data = $this->query->get();
-                break;
+ 
         }
 
         return $this;
     }
 
 
+    /**
+     * check if  source is valid, then detect items count
+     */
+    protected function getCount()
+    {
+        if (is_array($this->source)) {
+
+            return count($this->source);
+
+        } elseif(is_object($this->source) && in_array(get_class($this->source), $this->valid_sources))  {
+           
+            return  $this->query->count();
+            
+        } else {
+            dd(get_class($this->source));
+            throw new \Exception(' "source" must be a table name, an eloquent model or an eloquent builder. you passed: ' . get_class($this->source));
+        }
+    }
+    
+    
+    /**
+     * check if source is plain text, so a table name, and start query from that table.
+     * and 
+     * @return $this
+     */
+    protected function fixQuery($source)
+    {
+        if (is_string($source) && strpos(" ", $source) === false) {
+            return DB::table($source);
+        }
+        return $source;
+    }
+
+    /**
+     * if possible detact key-name (to be used in datagrid)
+     * @return string
+     */
+    public function getKeyName()
+    {
+        if (is_a($this->source, '\Illuminate\Database\Eloquent\Model')) {
+            return $this->source->getKeyName();
+        }
+
+        if (is_a($this->source, '\Illuminate\Database\Eloquent\Builder')) {
+            return $this->source->getModel()->getKeyName();
+        }
+
+        return 'id';
+    } 
+    
     
     /**
      * @return $this
