@@ -1,7 +1,7 @@
 <?php
 
 
-if ( ! function_exists('config')) {
+if ( ! function_exists('array_orderby')) {
     function array_orderby(&$array, $field, $direction = 'asc') {
 
         $column = array();
