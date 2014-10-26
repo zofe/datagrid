@@ -88,18 +88,38 @@ class DataSet
         return link_route('orderby', array($dir, $field));
     }
 
+    /**
+     * setup an order by 
+     * 
+     * @param $field
+     * @param string $direction
+     * @return $this
+     */
     public function orderBy($field, $direction="asc")
     {
         $this->orderby = array($field, $direction);
         return $this;
     }
 
+    /**
+     * return true if dataset is sorting by dield
+     * 
+     * @param $field
+     * @param string $dir
+     * @return bool
+     */
     public function onOrderby($field, $dir="asc")
     {
         $dir = ($dir == "asc") ? '' : '-';
         return is_route('orderby', array($dir, $field));
     }
 
+    /**
+     * setup a limit 
+     * 
+     * @param $limit
+     * @param $offset
+     */
     protected function limit($limit, $offset)
     {
         $this->limit = array($limit, $offset);
