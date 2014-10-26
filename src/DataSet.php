@@ -34,8 +34,9 @@ class DataSet
 
 
     /**
+     * Main method, set source 
+     * 
      * @param $source
-     *
      * @return static
      */
     public static function source($source)
@@ -119,7 +120,7 @@ class DataSet
     }
 
     /**
-     * flush events, build pagination and sort items.
+     * flush events, build pagination and sort items
      * 
      * @return $this
      */
@@ -194,8 +195,8 @@ class DataSet
     
     
     /**
-     * check if source is plain text, so a table name, and start query from that table.
-     * and 
+     * check if source is plain text, so a table name, and start query from that table
+     * 
      * @return $this
      */
     protected function fixQuery($source)
@@ -208,6 +209,7 @@ class DataSet
 
     /**
      * if possible detact key-name (to be used in datagrid)
+     * 
      * @return string
      */
     public function getKeyName()
