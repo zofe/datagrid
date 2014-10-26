@@ -169,17 +169,16 @@ class DataSet
             
         } else {
                 
-                //orderby
+            //orderby
+            if (isset($this->orderby)) {
+                $this->query = $this->query->orderBy($this->orderby[0], $this->orderby[1]);
+            }
 
-                if (isset($this->orderby)) {
-                    $this->query = $this->query->orderBy($this->orderby[0], $this->orderby[1]);
-                }
-
-                //limit-offset
-                if (isset($this->per_page)) {
-                    $this->query = $this->query->skip($offset)->take($this->per_page);
-                }
-                $this->data = $this->query->get();
+            //limit-offset
+            if (isset($this->per_page)) {
+                $this->query = $this->query->skip($offset)->take($this->per_page);
+            }
+            $this->data = $this->query->get();
         }
         return $this;
     }
