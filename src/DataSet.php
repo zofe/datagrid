@@ -12,15 +12,12 @@ class DataSet
     protected $source;
 
     /**
-     *
      * @var \Illuminate\Database\Query\Builder
      */
     protected $query;
-
     protected $valid_sources = array('Illuminate\Database\Eloquent\Model',
                                      'Illuminate\Database\Eloquent\Builder',
                                      'Illuminate\Database\Query\Builder');
-
     protected $paginator;
     protected $per_page = 10;
     protected $total_rows;
