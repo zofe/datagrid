@@ -50,14 +50,15 @@ class DataSet
         $ins->total_rows = $ins->getCount();
         $ins->key = $ins->getKeyName();
         
-        //bind events
+        //bind burp events
         BurpEvent::listen('dataset.sort', array($ins, 'sort'));
         BurpEvent::listen('dataset.page', array($ins, 'page'));
         return $ins;
     }
 
     /**
-     * Sort dataset 
+     * Sort source (quequed event by burp) 
+     * 
      * @param $direction
      * @param $field
      */
@@ -67,7 +68,8 @@ class DataSet
     }
 
     /**
-     * Set current page
+     * Set current page number (quequed event by burp)
+     * 
      * @param $page
      */
     public function page($page)
@@ -75,12 +77,12 @@ class DataSet
         $this->page = $page;
     }
     
-    
     /**
+     * build an order by link
+     * 
      * @param string $field
      * @param string $dir
-     *
-     * @return mixed
+     * @return string
      */
     public function orderbyLink($field, $dir = "asc")
     {
@@ -106,8 +108,10 @@ class DataSet
     }
 
     /**
+     * set number of items for single page (we're using "paginate" name,
+     * like the eloquent "paginate" method on query builder)
+     * 
      * @param $items
-     *
      * @return $this
      */
     public function paginate($items)
@@ -117,16 +121,19 @@ class DataSet
         return $this;
     }
 
+    /**
+     * flush events, build pagination and sort items.
+     * 
+     * @return $this
+     */
     public function build()
     {
         BurpEvent::flush('dataset.sort');
         BurpEvent::flush('dataset.page');
         
-
         $this->paginator =  Paginator::make($this->total_rows, $this->per_page, $this->page);
         $offset = $this->paginator->offset();
         $this->limit($this->per_page, $offset);
-
         
         if (is_array($this->source)) {
 
@@ -149,8 +156,7 @@ class DataSet
                 $this->source = array_slice($this->source, $this->limit[1], $this->limit[0]);
             }
             $this->data = $this->source;
-
-
+            
         } else {
                 
                 //orderby
@@ -164,15 +170,14 @@ class DataSet
                     $this->query = $this->query->skip($offset)->take($this->per_page);
                 }
                 $this->data = $this->query->get();
- 
         }
-
         return $this;
     }
 
-
     /**
      * check if  source is valid, then detect items count
+     * 
+     * @mixed \Exception | int
      */
     protected function getCount()
     {
@@ -185,7 +190,7 @@ class DataSet
             return  $this->query->count();
             
         } else {
-            dd(get_class($this->source));
+
             throw new \Exception(' "source" must be a table name, an eloquent model or an eloquent builder. you passed: ' . get_class($this->source));
         }
     }
@@ -219,20 +224,23 @@ class DataSet
         }
 
         return 'id';
-    } 
-    
+    }
     
     /**
+     * convention, widgets should have a method get{name} 
+     * that exec build() an return the object
+     * 
      * @return $this
      */
     public function getSet()
     {
         $this->build();
-
         return $this;
     }
 
     /**
+     * get subset of items (current page) of source
+     * 
      * @return array
      */
     public function getData()
@@ -241,8 +249,8 @@ class DataSet
     }
 
     /**
+     * 
      * @param string $view
-     *
      * @return mixed
      */
     public function links($view = 'pagination')
@@ -252,7 +260,11 @@ class DataSet
         }
     }
 
-    public function havePagination()
+    /**
+     * return true if pagination is needed
+     * @return bool
+     */
+    public function hasPagination()
     {
         return (bool) $this->limit;
     }
