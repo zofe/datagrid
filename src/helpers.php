@@ -15,3 +15,18 @@ if ( ! function_exists('array_orderby')) {
         }
     }
 }
+
+if ( ! function_exists('array_to_attributes')) {
+    function array_to_attributes($attributes) {
+        if (empty($attributes))
+            return '';
+
+        $compiled = '';
+        foreach ($attributes as $key => $val) {
+            $compiled .= ' ' . $key . '="' .  htmlspecialchars((string) $val, ENT_QUOTES, "UTF-8", true) . '"';
+        }
+
+        return $compiled;
+    }
+}
+
