@@ -26,7 +26,7 @@ It can
     $grid->add('name','Name',true);
     $grid->paginate(5);
 
-``
+```
 
 
 ## why not starting from laravel?
