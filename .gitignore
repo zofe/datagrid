@@ -4,6 +4,7 @@ composer.lock
 /vendor
 /cache
 /config
+/database
 /lang
 /models
 /views/*
