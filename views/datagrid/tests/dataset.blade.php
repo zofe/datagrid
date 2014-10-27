@@ -13,4 +13,6 @@
 
 {{  $ds->links()  }}
 </p>
+    {{ document_code(app('path').'/index.php', 24,22) }}
+    {{ document_code(app('path').'/views/datagrid/tests/dataset.blade.php') }}
 @stop
