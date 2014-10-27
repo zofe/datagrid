@@ -8,6 +8,7 @@ composer.lock
 /models
 /views/*
 !pagination.blade.php
-!dataset.blade.php
 !datagrid*.blade.php
-!test.blade.php
+!test_datagrid.blade.php
+!test_dataset.blade.php
+
