@@ -9,6 +9,5 @@ composer.lock
 /views/*
 !pagination.blade.php
 !dataset.blade.php
-!datagrid.blade.php
-!actions.blade.php
-!toolbar.blade.php
+!datagrid*.blade.php
+!test.blade.php
