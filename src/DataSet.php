@@ -194,12 +194,17 @@ class DataSet
 
             return count($this->source);
 
-        } elseif(is_object($this->source) && in_array(get_class($this->source), $this->valid_sources))  {
-           
-            return  $this->query->count();
+        } elseif(is_object($this->source))  {
+
+            foreach ($this->valid_sources as $valid) {
+                if (is_a($this->source, $valid)) return $this->query->count();  
+            }
+            
+            throw new \Exception(' "source" must be a table name, an eloquent model or an eloquent builder. you passed: ' . get_class($this->source));
             
         } else {
 
+            
             throw new \Exception(' "source" must be a table name, an eloquent model or an eloquent builder. you passed: ' . get_class($this->source));
         }
     }

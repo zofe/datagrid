@@ -24,10 +24,10 @@ route_query('ord=(-?)(\w+)', array('as'=>'orderby', function($direction, $field)
 ## test routes
 route_get('^/{page?}$', array('as'=>'datagrid', function () {
     
-    $grid = DataGrid::source('users');
+    $grid = DataGrid::source(new User);
     $grid->add('id','ID',true)->style('width:100px');
     $grid->add('name','Name',true);
-    $grid->paginate(1);
+    $grid->paginate(5);
 
 
     echo blade('datagrid.tests.datagrid', compact('grid'));
@@ -36,8 +36,8 @@ route_get('^/{page?}$', array('as'=>'datagrid', function () {
 
 route_get('^/dataset/{page?}$', array('as'=>'dataset', function () {
     
-    $ds = DataSet::source('users');
-    $ds->paginate(1);
+    $ds = DataSet::source(new User);
+    $ds->paginate(5);
     $ds->build();
     
     echo blade('datagrid.tests.dataset', compact('ds'));
