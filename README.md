@@ -48,13 +48,13 @@ install via composer
 ## Setup
 
 To configure database, views, you must reference to [Deficient](https://github.com/zofe/deficient)  
-This is a small how-to (each step is optional, depending on your needs)
+This is a small how-to 
 
-    #to create minimum folders / configuration files run:
+ - create minimum folders / configuration files
+ - deploy datagrid views
+ - deploy a front controller and a sample (optional, but suggested)
+ 
     php vendor/zofe/deficient/deficient setup:folders
-    
-    #to deploy a datagrid views run:
     php vendor/zofe/datagrid/datagrid setup:views
-    
-    #to deploy a front controller, routing and datagrid sample run:
     php vendor/zofe/datagrid/datagrid setup:router
+
