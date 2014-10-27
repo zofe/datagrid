@@ -53,7 +53,7 @@ class Paginator
         return $ins;
     }
 
-    public function links($view = 'pagination')
+    public function links($view = 'datagrid.pagination')
     {
         if ($this->total_pages < 2)
             return '';

@@ -263,7 +263,7 @@ class DataSet
      * @param string $view
      * @return mixed
      */
-    public function links($view = 'pagination')
+    public function links($view = 'datagrid.pagination')
     {
         if ($this->limit) {
             return $this->paginator->links($view);

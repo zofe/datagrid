@@ -38,7 +38,7 @@ class DataGrid extends DataSet
     
     public function build($view = '')
     {
-        ($view == '') and $view = 'datagrid';
+        ($view == '') and $view = 'datagrid.datagrid';
         parent::build();
         #Persistence::save();
         $this->buildRows();
@@ -206,7 +206,7 @@ class DataGrid extends DataSet
             $key = ($column->key != '') ?  $column->key : $this->key;
             $keyvalue = @$tablerow->{$key};
 
-            $value = blade('datagrid_actions', array('uri' => $column->uri, 'id' => $keyvalue, 'actions' => $column->actions));
+            $value = blade('datagrid.actions', array('uri' => $column->uri, 'id' => $keyvalue, 'actions' => $column->actions));
 
         }
 
@@ -215,7 +215,7 @@ class DataGrid extends DataSet
 
     public function getGrid($view = '')
     {
-        $this->output = $this->build($view)->render();
+        $this->output = $this->build($view);
 
         return $this->output;
     }

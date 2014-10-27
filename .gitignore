@@ -7,8 +7,6 @@ composer.lock
 /lang
 /models
 /views/*
-!pagination.blade.php
-!datagrid*.blade.php
-!test_datagrid.blade.php
-!test_dataset.blade.php
+!/views/datagrid*
+
 

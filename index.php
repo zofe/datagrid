@@ -24,35 +24,28 @@ route_query('ord=(-?)(\w+)', array('as'=>'orderby', function($direction, $field)
 ## test routes
 route_get('^/{page?}$', array('as'=>'datagrid', function () {
     
-    $grid = DataGrid::source('al_alert');
-    $grid->add('title','Title',true);
-    $grid->paginate(10);
-    $grid->build();
+    $grid = DataGrid::source('users');
+    $grid->add('id','ID',true)->style('width:100px');
+    $grid->add('name','Name',true);
+    $grid->paginate(1);
 
-    echo blade('test_datagrid', compact('grid'));
+
+    echo blade('datagrid.tests.datagrid', compact('grid'));
     die;
 }));
 
 route_get('^/dataset/{page?}$', array('as'=>'dataset', function () {
     
-    $ds = DataSet::source('al_alert');
-    $ds->paginate(10);
+    $ds = DataSet::source('users');
+    $ds->paginate(1);
     $ds->build();
     
-    echo blade('test_dataset', compact('ds'));
+    echo blade('datagrid.tests.dataset', compact('ds'));
     die;
 }));
 
-route_get('^/test/(\w+)$', function ( $title ) {
-
-    $content = $title.' page';
-    echo blade('hello', compact('title','content'));
-    die;
-});
-
-
 route_missing(function() {
-    echo blade('error', array(), 404);
+    echo blade('datagrid.tests.error', array(), 404);
     die;
 });
 
