@@ -53,7 +53,8 @@ This is a small how-to
  - create minimum folders / configuration files
  - deploy datagrid views
  - deploy a front controller and a sample (optional, but suggested)
- 
+
+
     php vendor/zofe/deficient/deficient setup:folders
     php vendor/zofe/datagrid/datagrid setup:views
     php vendor/zofe/datagrid/datagrid setup:router
