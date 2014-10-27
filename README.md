@@ -18,6 +18,17 @@ It can
 - Let you define url-semantic for sort/pagination segments or parameters (thanks to burp)
 
 
+## usage
+```php
+
+    $grid = DataGrid::source(new User);
+    $grid->add('id','ID',true)->style('width:100px');
+    $grid->add('name','Name',true);
+    $grid->paginate(5);
+
+``
+
+
 ## why not starting from laravel?
 
 Because it can be used stand alone, and in any other framework.  
